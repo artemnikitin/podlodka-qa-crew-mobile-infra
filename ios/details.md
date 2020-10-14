@@ -9,3 +9,12 @@ xcodebuild test \
 -destination 'platform=iOS Simulator,name=iPhone 11 Pro,OS=14.0'
 ```
 
+With xUnit output (requires [xcpretty](https://github.com/xcpretty/xcpretty))
+```shell
+xcodebuild test \
+-project AWSDeviceFarmiOSReferenceApp.xcodeproj \
+-scheme ADFiOSReferenceAppUITests \
+-destination 'platform=iOS Simulator,name=iPhone 11 Pro,OS=14.0' \
+| xcpretty -r junit --output results.xml
+```
+
