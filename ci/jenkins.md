@@ -22,7 +22,7 @@ You will need:
 ### Setup MacOS build node
 - Go to `Manage Jenkins` -> `Manage Nodes and Clouds` -> `New Node` or [http://<your_host>/computer/new](http://<your_host>/computer/new)
 - Setup your node like:
-
+![](macos_node_setup.png)
 - Go to [http://<your_host>/computer/macos/](http://<your_host>/computer/macos/) from MacOS node and download `agent.jar`
 - Run `agent.jar` like:
 ```shell
