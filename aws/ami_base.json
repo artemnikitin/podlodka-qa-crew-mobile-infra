@@ -1,0 +1,37 @@
+{
+  "variables": {
+    "ami_name": "Podlodka-QA-Crew-Mobile-{{isotime \"02-Jan-06 03_04_05\"}}",
+    "aws_access_key": "",
+    "aws_secret_key": ""
+  },
+  "builders": [{
+    "name": "AWS AMI Builder",
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "us-east-1",
+    "source_ami": "ami-0817d428a6fb68645",
+    "instance_type": "t2.micro",
+    "ssh_username": "ubuntu",
+    "ami_name": "{{user `ami_name`}}",
+    "ami_description": "Ubuntu 18.04 based image with Docker",
+    "vpc_id": "vpc-92e0a8f7",
+    "subnet_id": "subnet-0966753fda142fc6d"
+  }],
+  "provisioners": [{
+      "type": "shell",
+      "inline": [
+        "sleep 30",
+        "sudo apt-get update",
+        "sudo apt-get -y install apt-transport-https ca-certificates curl gnupg-agent software-properties-common",
+        "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -",
+        "sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\"",
+        "sudo apt-get -y install docker-ce docker-ce-cli containerd.io",
+        "sudo groupadd docker",
+        "sudo usermod -aG docker $USER",
+        "newgrp docker",
+        "sudo systemctl enable docker"
+      ]
+    }
+  ]
+}
