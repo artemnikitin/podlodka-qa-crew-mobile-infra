@@ -1,0 +1,40 @@
+pipeline {
+
+    agent {
+        label 'macos'
+    }
+
+    options {
+        timeout(time: 1, unit: 'HOURS')
+    }
+
+    stages {
+        stage('Git checkout') {
+            steps {
+                git credentialsId: 'github',
+                    url: 'git@github.com:artemnikitin/aws-device-farm-xctest-ui-tests-for-ios-sample-app.git'
+            }
+        }
+        stage('Run tests') {
+            steps {
+                script {
+                    def script = """xcodebuild test \
+-project AWSDeviceFarmiOSReferenceApp.xcodeproj \
+-scheme ADFiOSReferenceAppUITests \
+-destination 'platform=iOS Simulator,name=iPhone 11 Pro,OS=14.0' \
+| xcpretty -r junit --output results.xml"""
+                    env.TESTS_EXIT_CODE = sh(script: script, returnStatus: true)
+                    junit "results.xml"
+                    sh "exit ${env.TESTS_EXIT_CODE}"
+                }
+            }
+        }
+    }
+
+    post {
+        cleanup {
+            cleanWs()
+        }
+    }
+
+}
