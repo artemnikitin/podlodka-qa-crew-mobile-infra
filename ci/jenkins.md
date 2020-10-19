@@ -17,7 +17,7 @@ You will need:
 - All plugins with `Pipeline` in the name
 - All plugins with `Blue Ocean` in the name
 - https://plugins.jenkins.io/ec2/ (alternatively you can use https://plugins.jenkins.io/ec2-fleet/)
-- https://plugins.jenkins.io/aws-device-farm/ (if you want to use Jenkins plugin to run tests on AWS Device Farm)
+- https://plugins.jenkins.io/aws-device-farm/ (Optional, if you want to use Jenkins plugin to run tests on AWS Device Farm)
 
 ### Setup MacOS build node
 - Go to `Manage Jenkins` -> `Manage Nodes and Clouds` -> `New Node` or [http://<your_host>/computer/new](http://<your_host>/computer/new)
@@ -31,3 +31,12 @@ java -jar agent.jar \
 -secret <your_secret> \
 -workDir "/Users/artemnikitin/jenkins_agent"
 ```
+
+### Setup AWS build nodes
+- Go to [http://<your_host>/credentials/](http://<your_host>/credentials/) and add AWS credentials (use `AWS credentials` type) and SSH keypair
+- Go to [http://<your_host>/configureClouds/](http://<your_host>/configureClouds/)
+- Minimal configuration will look like:
+![](aws_node_setup_1.png)
+Button `Test Connection` should return `Success`
+![](aws_node_setup_2.png)
+![](aws_node_setup_3.png)
