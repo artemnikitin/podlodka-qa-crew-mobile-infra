@@ -17,7 +17,9 @@ pipeline {
         }
         stage('Build Docker image') {
             steps {
-                sh "docker build -t android-base ci/Dockerfile"
+                dir("ci") {
+                    sh "docker build -t android-base ."
+                }
             }
         }
         stage('Build Android') {
