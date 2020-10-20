@@ -5,3 +5,12 @@ We will use https://github.com/artemnikitin/aws-device-farm-sample-app-for-andro
 ```shell
 ./gradlew clean assembleDebug assembleAndroidTest
 ```
+
+### Building in Docker
+```shell
+docker run -it --rm \
+  -v <path/to/sources/on/your/machine>:/app \
+  -w "/app" \
+  android-base:latest \
+  /bin/bash ./gradlew clean assembleDebug assembleAndroidTest
+```
