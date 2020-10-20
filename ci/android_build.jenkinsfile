@@ -16,6 +16,9 @@ pipeline {
             }
         }
         stage('Build Docker image') {
+            options {
+                retry(2)
+            }
             steps {
                 dir("ci") {
                     sh "docker build -t android-base ."
@@ -23,14 +26,21 @@ pipeline {
             }
         }
         stage('Build Android') {
+            options {
+                retry(2)
+            }
             steps {
-                sh"""
-                    docker run -it \
-                    -v $WORKSPACE:/app \
-                    -w "/app" \
-                    android-base:latest \
-                    bash -c "./gradlew clean assembleDebug assembleAndroidTest"
-                """
+                script {
+                    def runScript = """
+                        docker run -d --rm \
+                        -v $WORKSPACE:/app \
+                        -w "/app" \
+                        android-base:latest \
+                        /bin/bash ./gradlew clean assembleDebug assembleAndroidTest
+                    """
+                    def container = sh(returnStdout: true, script: runScript)
+                    sh "docker attach ${container}"
+                }
             }
         }
     }
