@@ -1,0 +1,42 @@
+pipeline {
+
+    agent {
+        label 'android'
+    }
+
+    options {
+        timeout(time: 1, unit: 'HOURS')
+    }
+
+    stages {
+        stage('Git checkout') {
+            steps {
+                git credentialsId: 'github',
+                    url: 'git@github.com:artemnikitin/aws-device-farm-sample-app-for-android.git'
+            }
+        }
+        stage('Build Docker image') {
+            steps {
+                sh "docker build -t android-base ci/Dockerfile"
+            }
+        }
+        stage('Build Android') {
+            steps {
+                sh"""
+                    docker run -it \
+                    -v $WORKSPACE:/app \
+                    -w "/app" \
+                    android-base:latest \
+                    bash -c "./gradlew clean assembleDebug assembleAndroidTest"
+                """
+            }
+        }
+    }
+
+    post {
+        cleanup {
+            cleanWs()
+        }
+    }
+
+}
