@@ -5,7 +5,7 @@ pipeline {
     }
 
     options {
-        timeout(time: 1, unit: 'HOURS')
+        timeout(time: 2, unit: 'HOURS')
     }
 
     stages {
@@ -40,6 +40,29 @@ pipeline {
                     """
                     def container = sh(returnStdout: true, script: runScript)
                     sh "docker attach ${container}"
+                }
+            }
+        }
+        stage('Run tests in AWS Device Farm') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
+                                credentialsId: 'podlodka-aws',
+                                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                    sh """
+                        curl https://artnik-files.s3.amazonaws.com/devicefarm-ci-tool_linux_amd64 \
+                            --output devicefarm-ci-tool_linux_amd64
+                        chmod a+x devicefarm-ci-tool_linux_amd64
+
+                        ./devicefarm-ci-tool_linux_amd64 -project test \
+                            -app app/build/outputs/apk/app-debug.apk \
+                            -test app/build/outputs/apk/app-debug-androidTest.apk \
+                            -testType INSTRUMENTATION \
+                            -devices samsung \
+                            -wait \
+                            -checkEvery 60 \
+                            -ignoreUnavailableDevices
+                    """
                 }
             }
         }
