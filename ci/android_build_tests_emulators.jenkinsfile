@@ -1,0 +1,66 @@
+pipeline {
+
+    agent {
+        label 'android'
+    }
+
+    options {
+        timeout(time: 2, unit: 'HOURS')
+    }
+
+    stages {
+        stage('Git checkout') {
+            steps {
+                git credentialsId: 'github',
+                    url: 'git@github.com:artemnikitin/aws-device-farm-sample-app-for-android.git'
+            }
+        }
+        stage('Build Docker image') {
+            options {
+                retry(2)
+            }
+            steps {
+                dir("ci") {
+                    sh "docker build -t android-base ."
+                }
+            }
+        }
+        stage('Run tests on emulators') {
+            steps {
+                script {
+                    def script = """
+                        EMULATOR_CONTAINER=\$(docker run --rm -d \
+                            --privileged \
+                            -p 6080:6080 \
+                            -p 5554:5554 \
+                            -p 5555:5555 \
+                            --name="android-emulator" \
+                            budtmo/docker-android-x86-10.0:latest)
+                        echo \$EMULATOR_CONTAINER > emulator.txt
+
+                        TESTS_EMULATOR=\$(docker run --rm -d \
+                            --link="android-emulator" \
+                            -v $WORKSPACE:/app \
+                            -w "/app/ci" \
+                            android-base:latest \
+                            /bin/bash ./run_tests.sh)
+                        docker attach \$TESTS_EMULATOR
+                    """
+                    sh returnStatus: true, script: script
+                    junit "app/build/outputs/androidTest-results/**/*.xml"
+                }
+            }
+        }
+    }
+
+    post {
+        cleanup {
+            sh """
+                docker ps -a
+                docker stop \$(cat emulator.txt)
+            """
+            cleanWs()
+        }
+    }
+
+}
