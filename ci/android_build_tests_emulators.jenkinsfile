@@ -35,7 +35,7 @@ pipeline {
                             -p 5554:5554 \
                             -p 5555:5555 \
                             --name="android-emulator" \
-                            budtmo/docker-android-x86-10.0:latest)
+                            budtmo/docker-android-x86-6.0:latest)
                         echo \$EMULATOR_CONTAINER > emulator.txt
 
                         TESTS_EMULATOR=\$(docker run --rm -d \
