@@ -19,10 +19,10 @@ pipeline {
             steps {
                 script {
                     def script = """xcodebuild test \
--project AWSDeviceFarmiOSReferenceApp.xcodeproj \
--scheme ADFiOSReferenceAppUITests \
--destination 'platform=iOS Simulator,name=iPhone 11 Pro,OS=14.0' \
-| xcpretty -r junit --output results.xml"""
+                                    -project AWSDeviceFarmiOSReferenceApp.xcodeproj \
+                                    -scheme ADFiOSReferenceAppUITests \
+                                    -destination 'platform=iOS Simulator,name=iPhone 11 Pro,OS=14.1' \
+                                    | xcpretty -r junit --output results.xml"""
                     env.TESTS_EXIT_CODE = sh(script: script, returnStatus: true)
                     junit "results.xml"
                     sh "exit ${env.TESTS_EXIT_CODE}"
