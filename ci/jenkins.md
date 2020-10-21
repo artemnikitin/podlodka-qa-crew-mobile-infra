@@ -40,3 +40,5 @@ java -jar agent.jar \
 Button `Test Connection` should return `Success`
 ![](aws_node_setup_2.png)
 ![](aws_node_setup_3.png)
+![](aws_node_setup_4.png)
+![](aws_node_setup_5.png)
