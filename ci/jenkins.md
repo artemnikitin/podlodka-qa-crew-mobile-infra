@@ -22,7 +22,7 @@ You will need:
 ### Setup MacOS build node
 - Go to `Manage Jenkins` -> `Manage Nodes and Clouds` -> `New Node` or [http://<your_host>/computer/new](http://<your_host>/computer/new)
 - Setup your node like:
-![](macos_node_setup.png)
+![](../img/macos_node_setup.png)
 - Go to [http://<your_host>/computer/macos/](http://<your_host>/computer/macos/) from MacOS node and download `agent.jar`
 - Run `agent.jar` like:
 ```shell
@@ -36,9 +36,9 @@ java -jar agent.jar \
 - Go to [http://<your_host>/credentials/](http://<your_host>/credentials/) and add AWS credentials (use `AWS credentials` type) and SSH keypair
 - Go to [http://<your_host>/configureClouds/](http://<your_host>/configureClouds/)
 - Minimal configuration will look like:
-![](aws_node_setup_1.png)
+![](../img/aws_node_setup_1.png)
 Button `Test Connection` should return `Success`
-![](aws_node_setup_2.png)
-![](aws_node_setup_3.png)
-![](aws_node_setup_4.png)
-![](aws_node_setup_5.png)
+![](../img/aws_node_setup_2.png)
+![](../img/aws_node_setup_3.png)
+![](../img/aws_node_setup_4.png)
+![](../img/aws_node_setup_5.png)
