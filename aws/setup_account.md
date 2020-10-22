@@ -9,3 +9,17 @@
 - Go to [https://console.aws.amazon.com/ec2/v2/home#SecurityGroups:](https://console.aws.amazon.com/ec2/v2/home#SecurityGroups:) and create a new security group
 
 Everything created during setup will be needed to configure Jenkins to create new instances in AWS.
+
+### Creating base AMI
+We will use [Packer](https://www.packer.io/) for that. 
+- Install Packer according to https://learn.hashicorp.com/tutorials/packer/getting-started-install
+- Run it to verify our `ami-base-.json` using command `packer validate ami_base.json`
+- Create an AMI using command (for that you will need AWS credentials created previously)
+```shell
+packer build \
+  -var 'aws_access_key=<key>' \
+  -var 'aws_secret_key=<secret>' \
+  ami_base.json
+```
+
+
