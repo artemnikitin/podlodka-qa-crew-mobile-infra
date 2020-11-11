@@ -9,14 +9,14 @@
     "type": "amazon-ebs",
     "access_key": "{{user `aws_access_key`}}",
     "secret_key": "{{user `aws_secret_key`}}",
-    "region": "us-east-1",
+    "region": "us-east-1", //if You have instances, put Your region
     "source_ami": "ami-0817d428a6fb68645",
     "instance_type": "t2.micro",
     "ssh_username": "ubuntu",
     "ami_name": "{{user `ami_name`}}",
     "ami_description": "Ubuntu 18.04 based image with Docker",
-    "vpc_id": "vpc-92e0a8f7",
-    "subnet_id": "subnet-0966753fda142fc6d",
+    "vpc_id": "vpc-92e0a8f7", //use Your VPC ID. URL here: "console.aws.amazon.com/vpc/home"
+    "subnet_id": "subnet-0966753fda142fc6d", // use Your subnet. URL here: "console.aws.amazon.com/vpc/home -> Subnets"
     "launch_block_device_mappings": [
       {
         "device_name": "/dev/sda1",
