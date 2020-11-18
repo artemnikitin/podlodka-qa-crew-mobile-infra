@@ -11,8 +11,7 @@ pipeline {
     stages {
         stage('Git checkout') {
             steps {
-                git credentialsId: 'github',
-                    url: 'git@github.com:artemnikitin/aws-device-farm-sample-app-for-android.git'
+                git 'https://github.com/artemnikitin/aws-device-farm-sample-app-for-android'
             }
         }
         stage('Build Docker image') {
