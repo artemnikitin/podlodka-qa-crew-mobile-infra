@@ -1,13 +1,18 @@
 # Jenkins setup
 
 ### Local setup
-For this demo I'm running Jenkins locally. You can repeat that like: 
+For this demo I'm running Jenkins locally on MAC. You can repeat that like: 
 ```shell
 docker run \
 -p 8080:8080 \
 -p 50000:50000 \
 -v ~/jenkins_local:/var/jenkins_home \
 jenkins/jenkins:2.262-jdk11
+```
+
+if You use Windows command line, input like this: (You have install Docker, of course)
+```shell
+docker run -p 8080:8080 -p 50000:50000 jenkins/jenkins:2.262-jdk11
 ```
 
 **Don't use local Jenkins for production!**
